@@ -612,6 +612,10 @@ wet_shell_init(struct weston_compositor *compositor,
 	if (!shell->text_backend)
 		goto out_settings;
 
+	shell->desktop = weston_desktop_create(compositor, &shell_desktop_api, shell);
+	if (!shell->desktop)
+			return -1;
+
 	if (wl_global_create(compositor->wl_display,
 			     &ivi_application_interface, 1,
 			     shell, bind_ivi_application) == NULL)
