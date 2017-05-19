@@ -31,12 +31,14 @@
 
 #include "compositor.h"
 
+struct weston_desktop;
 struct ivi_shell
 {
 	struct wl_listener destroy_listener;
 
 	struct weston_compositor *compositor;
 
+	struct weston_desktop *desktop;
 	struct wl_list ivi_surface_list; /* struct ivi_shell_surface::link */
 
 	struct text_backend *text_backend;
