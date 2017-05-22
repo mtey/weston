@@ -546,6 +546,32 @@ static void
 desktop_surface_committed(struct weston_desktop_surface *surface,
 		  int32_t sx, int32_t sy, void *user_data)
 {
+	struct ivi_shell_surface *ivisurf = NULL;
+	struct ivi_shell *shell = user_data;
+	struct weston_surface *weston_surf = weston_desktop_surface_get_surface(surface);
+	int found = 0;
+
+	wl_list_for_each(ivisurf, &shell->ivi_surface_list, link) {
+		if (ivisurf->surface == weston_surf) {
+			found = 1;
+			break;
+		}
+	}
+
+	if(!found)
+		return;
+
+	if (weston_surf->width == 0 || weston_surf->height == 0)
+		return;
+
+	if (ivisurf->width != weston_surf->width ||
+	    ivisurf->height != weston_surf->height) {
+		ivisurf->width  = weston_surf->width;
+		ivisurf->height = weston_surf->height;
+
+		ivi_layout_surface_configure(ivisurf->layout_surface,
+					     weston_surf->width, weston_surf->height);
+	}
 }
 
 static void
