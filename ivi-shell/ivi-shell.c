@@ -510,6 +510,31 @@ static void
 desktop_surface_added(struct weston_desktop_surface *surface,
 	     void *user_data)
 {
+	struct ivi_shell *shell = (struct ivi_shell *) user_data;
+	struct ivi_layout_surface *layout_surface;
+	struct ivi_shell_surface *ivisurf;
+	struct weston_surface *weston_surf = weston_desktop_surface_get_surface(surface);
+
+	// TODO first approach for surface id
+	uint32_t id_surface = 666;
+
+	layout_surface = ivi_layout_surface_create(weston_surf, id_surface);
+	ivisurf = zalloc(sizeof *ivisurf);
+	if (ivisurf == NULL) {
+		return;
+	}
+
+	wl_list_init(&ivisurf->link);
+	wl_list_insert(&shell->ivi_surface_list, &ivisurf->link);
+
+	ivisurf->shell = shell;
+	ivisurf->id_surface = id_surface;
+
+	ivisurf->width = 0;
+	ivisurf->height = 0;
+	ivisurf->layout_surface = layout_surface;
+	ivisurf->weston_desktop_surface = surface;
+	ivisurf->surface = weston_surf;
 }
 
 static void
