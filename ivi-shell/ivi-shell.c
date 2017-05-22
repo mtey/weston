@@ -58,6 +58,7 @@ struct ivi_shell_surface
 	struct ivi_layout_surface *layout_surface;
 
 	struct weston_surface *surface;
+	struct weston_desktop_surface *weston_desktop_surface;
 	struct wl_listener surface_destroy_listener;
 
 	uint32_t id_surface;
