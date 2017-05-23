@@ -76,6 +76,13 @@ struct ivi_shell_setting
 };
 
 /*
+ * TODO first approach for surface id generation
+ * Later on the surface id has to be generated in a different manner. This
+ * approach enables a first PoC for xdg-shell support within ivi-shell.
+ */
+	uint32_t temp_generic_id_surface = 666;
+
+/*
  * Implementation of ivi_surface
  */
 
@@ -514,10 +521,7 @@ desktop_surface_added(struct weston_desktop_surface *surface,
 	struct ivi_shell_surface *ivisurf;
 	struct weston_surface *weston_surf = weston_desktop_surface_get_surface(surface);
 
-	// TODO first approach for surface id
-	uint32_t id_surface = 666;
-
-	layout_surface = ivi_layout_surface_create(weston_surf, id_surface);
+	layout_surface = ivi_layout_surface_create(weston_surf, temp_generic_id_surface);
 	ivisurf = zalloc(sizeof *ivisurf);
 	if (ivisurf == NULL) {
 		return;
@@ -527,13 +531,20 @@ desktop_surface_added(struct weston_desktop_surface *surface,
 	wl_list_insert(&shell->ivi_surface_list, &ivisurf->link);
 
 	ivisurf->shell = shell;
-	ivisurf->id_surface = id_surface;
+	ivisurf->id_surface = temp_generic_id_surface;
 
 	ivisurf->width = 0;
 	ivisurf->height = 0;
 	ivisurf->layout_surface = layout_surface;
 	ivisurf->weston_desktop_surface = surface;
 	ivisurf->surface = weston_surf;
+
+	/*
+	 * TODO first approach for surface id generation
+	 * Later on the surface id has to be generated in a different manner. This
+	 * approach enables a first PoC for xdg-shell support within ivi-shell.
+	 */
+	temp_generic_id_surface++;
 }
 
 static void
