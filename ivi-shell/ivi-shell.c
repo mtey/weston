@@ -644,15 +644,22 @@ wet_shell_init(struct weston_compositor *compositor,
 	if (!shell->text_backend)
 		goto err_shell;
 
+	shell->desktop = weston_desktop_create(compositor, &shell_desktop_api, shell);
+	if (!shell->desktop)
+		goto err_text_backend;
+
 	if (wl_global_create(compositor->wl_display,
 			     &ivi_application_interface, 1,
 			     shell, bind_ivi_application) == NULL)
-		goto err_text_backend;
+		goto err_desktop;
 
 	ivi_layout_init_with_compositor(compositor);
 	shell_add_bindings(compositor, shell);
 
 	return IVI_SUCCEEDED;
+
+err_desktop:
+	weston_desktop_destroy(shell->desktop);
 
 err_text_backend:
 	text_backend_destroy(shell->text_backend);
