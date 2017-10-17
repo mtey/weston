@@ -40,6 +40,14 @@ struct weston_surface;
 struct ivi_layout_surface;
 
 void
+ivi_layout_desktop_surface_configure(struct ivi_layout_surface *ivisurf,
+			     int32_t width, int32_t height);
+
+struct ivi_layout_surface*
+ivi_layout_desktop_surface_create(struct weston_surface *wl_surface,
+			  uint32_t id_surface);
+
+void
 ivi_layout_surface_configure(struct ivi_layout_surface *ivisurf,
 			     int32_t width, int32_t height);
 
